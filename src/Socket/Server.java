@@ -64,7 +64,7 @@ public class Server {
                 }
             } catch (IOException e) {
                 // Xử lý khi có lỗi xảy ra
-                System.err.println("Lỗi khi đọc từ client: " + e.getMessage());
+               // System.err.println("Lỗi khi đọc từ client: " + e.getMessage());
             } finally {
                 // Xóa client ra khỏi danh sách khi client ngắt kết nối
                 clients.remove(this);
@@ -72,7 +72,7 @@ public class Server {
                 try {
                     socket.close(); // Đóng socket của client
                 } catch (IOException e) {
-                    System.err.println("Lỗi khi đóng socket: " + e.getMessage());
+                    //System.err.println("Lỗi khi đóng socket: " + e.getMessage());
                 }
             }
         }

@@ -4,15 +4,28 @@ public class TKNgDung {
     private String taiKhoanNG;
     private String matKhauNG;
     private String tenHienThi;
-    public TKNgDung(){
+    private String email;
+    
+	public TKNgDung(){
 
+    }
+    public TKNgDung(String taiKhoanNG, String matKhauNG, String tenHienThi, String email){
+        this.taiKhoanNG = taiKhoanNG;
+        this.matKhauNG = matKhauNG;
+        this.tenHienThi = tenHienThi;
+        this.email = email;
     }
     public TKNgDung(String taiKhoanNG, String matKhauNG, String tenHienThi){
         this.taiKhoanNG = taiKhoanNG;
         this.matKhauNG = matKhauNG;
         this.tenHienThi = tenHienThi;
     }
-
+    public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
     public void setMatKhauNG(String matKhauNG) {
         this.matKhauNG = matKhauNG;
     }

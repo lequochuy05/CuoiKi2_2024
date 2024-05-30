@@ -31,10 +31,13 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
+import org.json.JSONObject;
 
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
 
 public class ADMIN extends JFrame {
 	private JTextField textField_sendChat;
@@ -119,19 +122,16 @@ public class ADMIN extends JFrame {
 		panel.add(btnNewButton_lichbay);
 		btnNewButton_lichbay.setForeground(new Color(255, 255, 255));
 		btnNewButton_lichbay.setBackground(Color.ORANGE);
-		java.net.URL urlIcon_Calender_lichbay = ADMIN.class.getResource("calendar");
-		Image img_lichbay = ImageIO.read(getClass().getResource("calendar.png"));
-		btnNewButton_lichbay.setIcon(new ImageIcon(img_lichbay));
+		btnNewButton_lichbay.setIcon(new ImageIcon("C:/Users/ASUS/Documents/Java/CuoiKi2_2024/src/img/calendar.png"));
 
 		JButton btnNewButton_1 = new JButton("Đăng Xuất");
+		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\log_off.png"));
 		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_1.setBounds(10, 205, 180, 60);
+		btnNewButton_1.setBounds(10, 280, 180, 60);
 		btnNewButton_1.setBackground(new Color(64, 128, 128));
 		btnNewButton_1.setForeground(Color.white);
-		java.net.URL urlIcon_dangxuat = ADMIN.class.getResource("log_off");
-		Image img_dangxuat = ImageIO.read(getClass().getResource("log_off.png"));
-		btnNewButton_1.setIcon(new ImageIcon(img_dangxuat));
+		
 		panel.add(btnNewButton_1);
 
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -154,20 +154,18 @@ public class ADMIN extends JFrame {
 		btnNewButton_duyet.setBounds(10, 75, 180, 60);
 		btnNewButton_duyet.setBackground(new Color(255, 128, 64));
 		btnNewButton_duyet.setForeground(new Color(255, 255, 255));
-		java.net.URL urlIcon_duyet = ADMIN.class.getResource("tick2");
-		Image img_duyet = ImageIO.read(getClass().getResource("tick2.png"));
-		btnNewButton_duyet.setIcon(new ImageIcon(img_duyet));
+		
+		btnNewButton_duyet.setIcon(new ImageIcon("C:/Users/ASUS/Documents/Java/CuoiKi2_2024/src/img/tick2.png"));
 		panel.add(btnNewButton_duyet);
+		
 
 		JButton btnNewButton = new JButton("Thoát");
+		btnNewButton.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\exit.png"));
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton.setBounds(10, 270, 180, 60);
+		btnNewButton.setBounds(10, 350, 180, 48);
 		btnNewButton.setBackground(new Color(0, 0, 128));
 		btnNewButton.setForeground(new Color(255, 255, 255));
-		java.net.URL urlIcon_thoat = ADMIN.class.getResource("exit");
-		Image img_thoat = ImageIO.read(getClass().getResource("exit.png"));
-		btnNewButton.setIcon(new ImageIcon(img_thoat));
 		panel.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 
@@ -183,24 +181,23 @@ public class ADMIN extends JFrame {
 
 		JButton btnNewButton_chat = new JButton("Chat");
 		btnNewButton_chat
-				.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\View\\admin.png"));
+				.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\admin.png"));
 		btnNewButton_chat.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton_chat.setForeground(Color.WHITE);
 		btnNewButton_chat.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_chat.setBackground(new Color(128, 64, 64));
-		btnNewButton_chat.setBounds(10, 340, 180, 60);
+		btnNewButton_chat.setBounds(10, 210, 180, 60);
 		panel.add(btnNewButton_chat);
 
 		JButton btnNewButton_5 = new JButton("K.Lưu Trữ");
+		btnNewButton_5.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\kholuutru.png"));
 		btnNewButton_5.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton_5.setBackground(new Color(128, 64, 64));
 		btnNewButton_5.setForeground(new Color(255, 255, 255));
 		btnNewButton_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_5.setBounds(10, 140, 180, 60);
 		panel.add(btnNewButton_5);
-		java.net.URL urlIcon_kholuutru = ADMIN.class.getResource("kholuutru");
-		Image img_kholuutru = ImageIO.read(getClass().getResource("kholuutru.png"));
-		btnNewButton_5.setIcon(new ImageIcon(img_kholuutru));
+		
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -260,16 +257,14 @@ public class ADMIN extends JFrame {
 		lblMcb_kholuutru.setBounds(15, 35, 143, 34);
 		jPanel_kholuutru.add(lblMcb_kholuutru);
 
-		JButton btnTim_kholuutru = new JButton("Tìm");
+		JButton btnTim_kholuutru = new JButton("Tìm   ");
 		btnTim_kholuutru.addActionListener(controller);
 		btnTim_kholuutru.setBackground(new Color(255, 128, 128));
 		btnTim_kholuutru.setForeground(new Color(255, 255, 255));
 		btnTim_kholuutru.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnTim_kholuutru.setBounds(316, 35, 100, 34);
 		jPanel_kholuutru.add(btnTim_kholuutru);
-		java.net.URL urlIcon_timkiem = ADMIN.class.getResource("timkiem");
-		Image img_timkiem = ImageIO.read(getClass().getResource("timkiem.png"));
-		btnTim_kholuutru.setIcon(new ImageIcon(img_timkiem));
+		
 
 		String[] dsmacb = this.lichBayDAO.luutrumachuyenbay();
 		comboBox = new JComboBox();
@@ -387,14 +382,10 @@ public class ADMIN extends JFrame {
 		comboBox_lichhangbay.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		comboBox_lichhangbay.setBounds(391, 68, 181, 34);
 		panel_lichbay.add(comboBox_lichhangbay);
-		java.net.URL urlIcon_chinhsua = ADMIN.class.getResource("edit");
-		Image img_chinhsua = ImageIO.read(getClass().getResource("edit.png"));
-		java.net.URL urlIcon_xoa = ADMIN.class.getResource("delete");
-		Image img_xoa = ImageIO.read(getClass().getResource("delete.png"));
-		java.net.URL urlIcon_them = ADMIN.class.getResource("add2");
-		Image img_them = ImageIO.read(getClass().getResource("add2.png"));
+		
 
 		JButton btnNewButton_them = new JButton("Thêm   ");
+		btnNewButton_them.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\add2.png"));
 		btnNewButton_them.setBounds(27, 141, 180, 35);
 		panel_lichbay.add(btnNewButton_them);
 		btnNewButton_them.setHorizontalAlignment(SwingConstants.LEADING);
@@ -402,9 +393,10 @@ public class ADMIN extends JFrame {
 		btnNewButton_them.setBackground(new Color(255, 128, 128));
 		btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_them.setForeground(Color.white);
-		btnNewButton_them.setIcon(new ImageIcon(img_them));
+		
 
 		JButton btnNewButton_chinhsua = new JButton("Chỉnh Sửa");
+		btnNewButton_chinhsua.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\edit.png"));
 		btnNewButton_chinhsua.setBounds(512, 141, 180, 35);
 		panel_lichbay.add(btnNewButton_chinhsua);
 		btnNewButton_chinhsua.setHorizontalAlignment(SwingConstants.LEADING);
@@ -413,9 +405,10 @@ public class ADMIN extends JFrame {
 		btnNewButton_chinhsua.setBackground(new Color(255, 128, 128));
 		btnNewButton_chinhsua.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_chinhsua.setForeground(new Color(255, 255, 255));
-		btnNewButton_chinhsua.setIcon(new ImageIcon(img_chinhsua));
+	
 
 		JButton btnNewButton_xoa = new JButton("Xóa       ");
+		btnNewButton_xoa.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\delete.png"));
 		btnNewButton_xoa.setBounds(263, 141, 180, 35);
 		panel_lichbay.add(btnNewButton_xoa);
 		btnNewButton_xoa.setHorizontalAlignment(SwingConstants.LEADING);
@@ -423,7 +416,7 @@ public class ADMIN extends JFrame {
 		btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_xoa.setBackground(new Color(255, 128, 128));
 		btnNewButton_xoa.setForeground(new Color(255, 255, 255));
-		btnNewButton_xoa.setIcon(new ImageIcon(img_xoa));
+		
 
 		JButton btnNewButton_6 = new JButton("Tìm");
 		btnNewButton_6.setBounds(757, 141, 180, 35);
@@ -496,9 +489,7 @@ public class ADMIN extends JFrame {
 		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_2.setBounds(789, 11, 160, 45);
 		jPanel_duyet.add(btnNewButton_2);
-		java.net.URL urlIcon_timkiem2 = ADMIN.class.getResource("timkiem");
-		Image img_timkiem2 = ImageIO.read(getClass().getResource("timkiem.png"));
-		btnNewButton_2.setIcon(new ImageIcon(img_timkiem2));
+		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\timkiem.png"));
 
 		JButton btnNewButton_3 = new JButton("Thông Báo");
 		btnNewButton_3.setBackground(new Color(255, 128, 128));
@@ -508,9 +499,7 @@ public class ADMIN extends JFrame {
 		btnNewButton_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_3.setBounds(789, 121, 160, 45);
 		jPanel_duyet.add(btnNewButton_3);
-		java.net.URL urlIcon_tbao = ADMIN.class.getResource("thongbao");
-		Image img_thongbao = ImageIO.read(getClass().getResource("thongbao.png"));
-		btnNewButton_3.setIcon(new ImageIcon(img_thongbao));
+		btnNewButton_3.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\thongbao.png"));
 
 		comboBox_duyetmacb = new JComboBox();
 		String[] macb = this.lichBayDAO.laymachuyenbay();
@@ -535,15 +524,13 @@ public class ADMIN extends JFrame {
 		NewLabel_anhchuyenkhoan.setBorder(new LineBorder(Color.BLACK, 1));
 
 		JButton btnNewButton_4 = new JButton("H.Thành");
+		btnNewButton_4.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\hoanthanh.png"));
 		btnNewButton_4.setBackground(new Color(255, 128, 128));
 		btnNewButton_4.setForeground(new Color(255, 255, 255));
 		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton_4.addActionListener(controller);
 		btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_4.setBounds(789, 66, 160, 45);
-		java.net.URL urlIcon_hthanh = ADMIN.class.getResource("hoanthanh");
-		Image img_hthanh = ImageIO.read(getClass().getResource("hoanthanh.png"));
-		btnNewButton_4.setIcon(new ImageIcon(img_hthanh));
 
 		textArea_message = new JTextArea();
 		textArea_message.setFont(new Font("Monospaced", Font.PLAIN, 18));
@@ -636,18 +623,21 @@ public class ADMIN extends JFrame {
 		});
 		contentPane.add(jPanel_card);
 
-		JPanel panel_art = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				ImageIcon imageIcon = new ImageIcon("D:\\Workspace\\Intell\\QLCB\\src\\View\\nen2.jpg");
-				Image image = imageIcon.getImage();
-				g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-			}
-		};
-		panel_art.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_art.setBounds(2, 2, 1194, 173);
-		contentPane.add(panel_art);
+		 JPanel panel_art = new JPanel() {
+	            @Override
+	            protected void paintComponent(Graphics g) {
+	                super.paintComponent(g);
+	                ImageIcon imageIcon = new ImageIcon("C:/Users/ASUS/Documents/Java/CuoiKi2_2024/src/img/nen2.png");
+	                Image image = imageIcon.getImage();
+	                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+	            }
+	        };
+	        panel_art.setBorder(new LineBorder(new Color(0, 0, 0)));
+	        panel_art.setBounds(2, 2, 1194, 173);
+	        contentPane.add(panel_art);
+		
+		JLabel lblNewLabel = new JLabel("");
+		panel_art.add(lblNewLabel);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -1289,4 +1279,6 @@ public class ADMIN extends JFrame {
 		comboBox_lichkhoihanh.setSelectedIndex(0);
 
 	}
+	
+	
 }

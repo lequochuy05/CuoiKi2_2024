@@ -1,4 +1,4 @@
-package chat2;
+package Socket;
 
 import java.util.Base64;
 

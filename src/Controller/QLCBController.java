@@ -32,10 +32,10 @@ public class QLCBController implements ActionListener {
         } else if (src.equals("Thông Báo")) {
             this.admin.xacnhankhachhang();
         } else if (src.equals("H.Thành")) {
-            this.admin.hoanthanhchuyenbay();}
-//        } else if (src.equals("Tìm")) {
-//            this.admin.timcackhachhang();
-//        }
+            this.admin.hoanthanhchuyenbay();
+        } else if (src.equals("Tìm   ")) {
+            this.admin.timcackhachhang();
+        }
     }
 
 }

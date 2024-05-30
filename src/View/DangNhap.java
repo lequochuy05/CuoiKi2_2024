@@ -3,6 +3,7 @@ package View;
 import Controller.ControllerDangNhap;
 import DAO.AdminDAO;
 import DAO.NguoiDungDAO;
+import Mail.Emailto;
 import Model.TKAdmin;
 import Model.TKNgDung;
 import View.NguoiDung;
@@ -81,6 +82,8 @@ public class DangNhap extends JFrame {
 	private JPasswordField txtPassword_xoatk;
 	private JCheckBox cbAdmin_xoatk;
 	private JButton btnXacNhan_xoatk;
+	public JTextField txt_email;
+	private NguoiDungDAO dao;
 
 	/**
 	 * Launch the application.
@@ -102,6 +105,7 @@ public class DangNhap extends JFrame {
 			}
 		});
 	}
+
 	private static boolean isServerRunning(String address, int port) {
 		try (Socket ignored = new Socket(address, port)) {
 			// Nếu kết nối thành công, server đang chạy
@@ -118,7 +122,7 @@ public class DangNhap extends JFrame {
 	public DangNhap() {
 		ControllerDangNhap controllerDN = new ControllerDangNhap(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 336, 432);
+		setBounds(100, 100, 338, 487);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 
@@ -293,39 +297,39 @@ public class DangNhap extends JFrame {
 		txtUsername_dangky.setHorizontalAlignment(SwingConstants.LEFT);
 		txtUsername_dangky.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtUsername_dangky.setColumns(10);
-		txtUsername_dangky.setBounds(32, 157, 258, 35);
+		txtUsername_dangky.setBounds(32, 175, 258, 35);
 		panelDangKy.add(txtUsername_dangky);
 
 		lblUsername_dangky = new JLabel("Tài khoản");
 		lblUsername_dangky.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblUsername_dangky.setBounds(32, 122, 115, 25);
+		lblUsername_dangky.setBounds(32, 150, 115, 25);
 		panelDangKy.add(lblUsername_dangky);
 
 		lblPassword_dangky = new JLabel("Mật khẩu");
 		lblPassword_dangky.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblPassword_dangky.setBounds(32, 202, 115, 25);
+		lblPassword_dangky.setBounds(32, 267, 115, 25);
 		panelDangKy.add(lblPassword_dangky);
 
 		txtPassword_dangky = new JPasswordField();
-		txtPassword_dangky.setBounds(32, 237, 258, 35);
+		txtPassword_dangky.setBounds(32, 292, 258, 35);
 		panelDangKy.add(txtPassword_dangky);
 
 		btnDangKy = new JButton("Đăng ký");
 		btnDangKy.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnDangKy.setBackground(Color.WHITE);
-		btnDangKy.setBounds(32, 305, 258, 35);
+		btnDangKy.setBounds(32, 360, 258, 35);
 		panelDangKy.add(btnDangKy);
 		btnDangKy.addActionListener(controllerDN);
 
 		cbAdmin_dangky = new JCheckBox("Admin");
 		cbAdmin_dangky.setFont(new Font("Tahoma", Font.BOLD, 12));
-		cbAdmin_dangky.setBounds(32, 278, 93, 21);
+		cbAdmin_dangky.setBounds(35, 333, 93, 21);
 		panelDangKy.add(cbAdmin_dangky);
 
 		btnBack_dangky = new JButton("Quay lại");
 		btnBack_dangky.setBackground(new Color(255, 255, 255));
 		btnBack_dangky.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnBack_dangky.setBounds(87, 350, 203, 35);
+		btnBack_dangky.setBounds(87, 405, 203, 35);
 		panelDangKy.add(btnBack_dangky);
 		btnBack_dangky.addActionListener(new ActionListener() {
 			@Override
@@ -340,20 +344,32 @@ public class DangNhap extends JFrame {
 		btnXemlai_dangky = new JButton("?");
 		btnXemlai_dangky.setBackground(new Color(255, 255, 255));
 		btnXemlai_dangky.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnXemlai_dangky.setBounds(32, 350, 45, 35);
+		btnXemlai_dangky.setBounds(32, 405, 45, 35);
 		panelDangKy.add(btnXemlai_dangky);
 
 		lblDisplayName_dangky = new JLabel("Tên Hiển Thị");
 		lblDisplayName_dangky.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDisplayName_dangky.setBounds(32, 52, 155, 25);
+		lblDisplayName_dangky.setBounds(32, 209, 155, 25);
 		panelDangKy.add(lblDisplayName_dangky);
 
 		textField_displayName = new JTextField();
 		textField_displayName.setHorizontalAlignment(SwingConstants.LEFT);
 		textField_displayName.setFont(new Font("Tahoma", Font.BOLD, 15));
 		textField_displayName.setColumns(10);
-		textField_displayName.setBounds(32, 77, 258, 35);
+		textField_displayName.setBounds(32, 233, 258, 35);
 		panelDangKy.add(textField_displayName);
+
+		JLabel lbl_email = new JLabel("Email");
+		lbl_email.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbl_email.setBounds(32, 85, 115, 25);
+		panelDangKy.add(lbl_email);
+
+		txt_email = new JTextField();
+		txt_email.setHorizontalAlignment(SwingConstants.LEFT);
+		txt_email.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txt_email.setColumns(10);
+		txt_email.setBounds(32, 114, 258, 35);
+		panelDangKy.add(txt_email);
 		btnXemlai_dangky.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -756,11 +772,27 @@ public class DangNhap extends JFrame {
 	private void thucHienDoiMatKhauNguoiDung(String taiKhoan, String matKhau, String matKhauMoi) {
 		boolean kiemTraNgDung = NguoiDungDAO.getInstance().kiemTraTaiKhoanMatKhauNguoiDung(taiKhoan, matKhau);
 		if (kiemTraNgDung) {
-			TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhauMoi, null);
-			NguoiDungDAO.getInstance().doiMatKhau(tkNgDung);
-			thongbao = "Đổi mật khẩu thành công!\n" + "Mật khẩu mới của bạn là: " + matKhauMoi;
-			JOptionPane.showMessageDialog(this,
-					"Đổi mật khẩu thành công!\n" + "Mật khẩu mới của bạn là: " + matKhauMoi);
+			dao = new NguoiDungDAO();
+			String textField_email = dao.layEmail(taiKhoan);
+			Emailto.sendEmail(textField_email.trim());
+			String randomOTP = Emailto.laymaTeenCode(); // Lấy mã OTP đã gửi từ email
+
+			String xacthuc = JOptionPane.showInputDialog(this, "Nhập Mã OTP qua email: " + textField_email, "Messenger",
+					JOptionPane.OK_CANCEL_OPTION);
+			if (xacthuc != null) {
+
+				if (xacthuc.equals(randomOTP)) {
+					TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhauMoi, null);
+					NguoiDungDAO.getInstance().doiMatKhau(tkNgDung);
+					thongbao = "Đổi mật khẩu thành công!\n" + "Mật khẩu mới của bạn là: " + matKhauMoi;
+					JOptionPane.showMessageDialog(this,
+							"Đổi mật khẩu thành công!\n" + "Mật khẩu mới của bạn là: " + matKhauMoi);
+				} else {
+					JOptionPane.showMessageDialog(this, "Mã OTP Không hợp lệ");
+
+				}
+			}
+
 		} else {
 			JOptionPane.showMessageDialog(this, "Tài khoản/mật khẩu không chính xác!", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
@@ -768,11 +800,21 @@ public class DangNhap extends JFrame {
 	}
 
 	public void thucHienDangKyTaiKhoan() {
+		String email = txt_email.getText();
 		String taiKhoan = txtUsername_dangky.getText();
 		char[] matKhau = txtPassword_dangky.getPassword();
-		String encodepass = Base64.getEncoder().encodeToString(new String(matKhau).getBytes());
+		// String encodepass = Base64.getEncoder().encodeToString(new
+		// String(matKhau).getBytes());
 		String tenht = textField_displayName.getText();
-
+		if (email.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập email", "ERROR", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (!email.matches("^.+@gmail.com")) {
+			JOptionPane.showMessageDialog(this, "Nhập email đúng định  dạng @gmail.com", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (taiKhoan.isEmpty() || matKhau.length == 0) {
 			JOptionPane.showMessageDialog(this, "Vui lòng nhập tài khoản/mật khẩu", "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -783,10 +825,13 @@ public class DangNhap extends JFrame {
 			if (cbAdmin_dangky.isSelected()) {
 				thucHienDangKyTaiKhoanAdmin(taiKhoan, new String(matKhau));
 			} else
-				thucHienDangKyTaiKhoanNguoiDung(taiKhoan, new String(matKhau), tenht);
+
+				thucHienDangKyTaiKhoanNguoiDung(taiKhoan, new String(matKhau), tenht, email);
 		}
 		txtUsername_dangky.setText("");
 		txtPassword_dangky.setText("");
+		txt_email.setText("");
+		textField_displayName.setText("");
 	}
 
 	private void thucHienDangKyTaiKhoanAdmin(String taiKhoan, String matKhau) {
@@ -816,17 +861,31 @@ public class DangNhap extends JFrame {
 		}
 	}
 
-	private void thucHienDangKyTaiKhoanNguoiDung(String taiKhoan, String matKhau, String tenHt) {
+	private void thucHienDangKyTaiKhoanNguoiDung(String taiKhoan, String matKhau, String tenHt, String email) {
 		boolean kiemTraNgDung = NguoiDungDAO.getInstance().kiemTraTaiKhoanTonTai(taiKhoan);
 		if (kiemTraNgDung) {
 			JOptionPane.showMessageDialog(this, "Tài khoản/mật khẩu không chính xác!", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhau, tenHt);
-		NguoiDungDAO.getInstance().dangKyTaiKhoan(tkNgDung);
-		thongbao = "Đăng ký tài khoản: " + taiKhoan + ", mật khẩu: " + matKhau + " thành công!";
-		JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		String textField_email = txt_email.getText();
+		Emailto.sendEmail(textField_email.trim());
+		String randomOTP = Emailto.laymaTeenCode(); // Lấy mã OTP đã gửi từ email
+
+		String xacthuc = JOptionPane.showInputDialog(this, "Nhập Mã OTP qua email: " + textField_email, "Messenger",
+				JOptionPane.OK_CANCEL_OPTION);
+		if (xacthuc != null) {
+
+			if (xacthuc.equals(randomOTP)) {
+				TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhau, tenHt, textField_email);
+				NguoiDungDAO.getInstance().dangKyTaiKhoan(tkNgDung);
+				thongbao = "Đăng ký tài khoản: " + taiKhoan + ", mật khẩu: " + matKhau + " thành công!";
+				JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Mã xác nhận không đúng");
+			}
+		}
+
 	}
 
 	public void thucHienLayLaiMatKhau() {
@@ -883,14 +942,30 @@ public class DangNhap extends JFrame {
 
 	private void thucHienLaylaiMatKhauNguoiDung(String taiKhoan, String captcha1, String captcha2) {
 		boolean kiemTraTonTai = NguoiDungDAO.getInstance().kiemTraTaiKhoanTonTai(taiKhoan);
+		dao = new NguoiDungDAO();
+		String textField_email = dao.layEmail(taiKhoan);
 		if (kiemTraTonTai) {
 			if (captcha1.equalsIgnoreCase(captcha2)) {
-				String matKhauMoi = String.valueOf(random());
-				TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhauMoi, null);
-				NguoiDungDAO.getInstance().quenMatKhau(tkNgDung);
-				thongbao = "Lấy lại mật khẩu thành công!\nMật khẩu mới của bạn là: " + matKhauMoi;
-				JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-				txtCaptcha2_quenmatkhau.setText(String.valueOf(random()));
+				Emailto.sendEmail(textField_email.trim());
+				String randomOTP = Emailto.laymaTeenCode(); // Lấy mã OTP đã gửi từ email
+
+				String xacthuc = JOptionPane.showInputDialog(this, "Nhập Mã OTP qua email: " + textField_email,
+						"Messenger", JOptionPane.OK_CANCEL_OPTION);
+				if (xacthuc != null) {
+
+					if (xacthuc.equals(randomOTP)) {
+						String matKhauMoi = String.valueOf(random());
+						TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhauMoi, null);
+						NguoiDungDAO.getInstance().quenMatKhau(tkNgDung);
+						thongbao = "Lấy lại mật khẩu thành công!\nMật khẩu mới của bạn là: " + matKhauMoi;
+						JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+						txtCaptcha2_quenmatkhau.setText(String.valueOf(random()));
+					} else {
+						JOptionPane.showMessageDialog(null, "Ma OTP khong dung");
+					}
+
+				}
+
 			} else {
 				JOptionPane.showMessageDialog(this, "Mã captcha không đúng", "ERROR", JOptionPane.ERROR_MESSAGE);
 				txtCaptcha2_quenmatkhau.setText(String.valueOf(random()));
@@ -949,12 +1024,27 @@ public class DangNhap extends JFrame {
 	}
 
 	public void thucHienXoaTaiKhoanNguoiDung(String taiKhoan, String matKhau) {
+		dao = new NguoiDungDAO();
+		String textField_email = dao.layEmail(taiKhoan);
 		boolean kiemTraTonTai = NguoiDungDAO.getInstance().kiemTraTaiKhoanMatKhauNguoiDung(taiKhoan, matKhau);
 		if (kiemTraTonTai) {
-			TKNgDung nguoiDung = new TKNgDung(taiKhoan, matKhau, null);
-			NguoiDungDAO.getInstance().xoaTaiKhoan(nguoiDung);
-			thongbao = "Xóa tài khoản " + taiKhoan + " thành công!";
-			JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+			Emailto.sendEmail(textField_email.trim());
+			String randomOTP = Emailto.laymaTeenCode(); // Lấy mã OTP đã gửi từ email
+
+			String xacthuc = JOptionPane.showInputDialog(this, "Nhập Mã OTP qua email: " + textField_email, "Messenger",
+					JOptionPane.OK_CANCEL_OPTION);
+			if (xacthuc != null) {
+
+				if (xacthuc.equals(randomOTP)) {
+					TKNgDung nguoiDung = new TKNgDung(taiKhoan, matKhau, null);
+					NguoiDungDAO.getInstance().xoaTaiKhoan(nguoiDung);
+					thongbao = "Xóa tài khoản " + taiKhoan + " thành công!";
+					JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(null, "Ma OTP khong dung");
+				}
+			}
+			
 		} else {
 			JOptionPane.showMessageDialog(this, "Nhập sai tài khoản/mật khẩu", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}

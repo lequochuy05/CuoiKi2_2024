@@ -3,8 +3,7 @@ package DAO;
 import Database.JDCBCUtil;
 import Model.TKAdmin;
 import Model.TKNgDung;
-import View.DangNhap;
-import View.NguoiDung;
+import View.*;
 import Socket.MaHoa;
 
 import javax.swing.*;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 
 public class NguoiDungDAO {
     private MaHoa maHoa;
+    private DangNhap dn;
     public static NguoiDungDAO getInstance(){
         return new NguoiDungDAO();
     }
@@ -23,11 +23,13 @@ public class NguoiDungDAO {
     public int dangKyTaiKhoan(TKNgDung ngDung){
         try{
             Connection connection = JDCBCUtil.getConnection();
-            String sql = "INSERT INTO dstknguoidung (userName, password, displayname) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO dstknguoidung (userName, password, displayname, email) VALUES (?, ?, ?, ?)";
             PreparedStatement pst = connection.prepareStatement(sql);
             pst.setString(1, ngDung.getTaiKhoanNG());
             pst.setString(2, ngDung.getMatKhauNG());
             pst.setString(3, ngDung.getTenHienThi());
+            pst.setString(4, ngDung.getEmail());
+            
             pst.executeUpdate();
             JDCBCUtil.closeConnection(connection);
         }catch (SQLException e){
@@ -93,7 +95,9 @@ public class NguoiDungDAO {
                 String taiKhoan = resultSet.getString("userName");
                 String matKhau = resultSet.getString("password");
                 String tenht = resultSet.getString("displayname");
-                TKNgDung ngDung = new TKNgDung(taiKhoan, matKhau, tenht);
+                String email = resultSet.getString("email");
+                
+                TKNgDung ngDung = new TKNgDung(taiKhoan, matKhau, tenht, email);
                 dsTraVe.add(ngDung);
             }
             JDCBCUtil.closeConnection(connection);
@@ -166,4 +170,28 @@ public class NguoiDungDAO {
         }
         return tenDangNhap;
     }
+  
+    
+    public String layEmail(String user) {
+        String em ="";
+        try {
+            Connection connection = JDCBCUtil.getConnection();
+            String sql = "SELECT email FROM dstknguoidung WHERE username = ?";
+            PreparedStatement pst = connection.prepareStatement(sql);         
+            pst.setString(1, user);        
+            
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+            	em = rs.getString("email");
+            }
+
+            JDCBCUtil.closeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+     return em;
+    }
+ 
+
 }

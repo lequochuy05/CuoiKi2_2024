@@ -16,7 +16,7 @@ public class BieuDoXuHuong extends JFrame {
     private JPanel chartPanel;
 
     public BieuDoXuHuong() {
-        setTitle("Xu Hướng Đặt Ghế ");
+        setTitle("Pie Chart Example");
         setSize(810, 547);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -51,9 +51,9 @@ public class BieuDoXuHuong extends JFrame {
                 if (xh.kiemTraNam(textField.getText())) {
                     // Tạo dataset cho biểu đồ tròn
                     DefaultPieDataset dataset = new DefaultPieDataset();
-                    dataset.setValue("EconomyClass: ", loaiGhe.getEconomyclass());
-                    dataset.setValue("BusinessClass: ", loaiGhe.getBusinessclass());
-                    dataset.setValue("FirstClass: ", loaiGhe.getFirstclass());
+                    dataset.setValue("EconomyClass: " + loaiGhe.getEconomyclass(), loaiGhe.getEconomyclass());
+                    dataset.setValue("BusinessClass: " + loaiGhe.getBusinessclass(), loaiGhe.getBusinessclass());
+                    dataset.setValue("FirstClass: " + loaiGhe.getFirstclass(), loaiGhe.getFirstclass());
 
                     // Tạo biểu đồ tròn
                     JFreeChart pieChart = ChartFactory.createPieChart(

@@ -8,13 +8,13 @@ import javax.swing.border.EmptyBorder;
 
 import Controller.ControllerDatVe;
 import Controller.QLCBController;
-import DAO.KhachHangDAO;
-import DAO.LichBayDAO;
+import DAO.*;
 import Mail.Emailto;
 import Model.DSKhachHang;
 import Model.DSLichBay;
 import Model.EditLichBay;
 import Model.KhachHang;
+import Model.TKNgDung;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -73,7 +73,6 @@ public class NguoiDung extends JFrame {
 	private JTextField textField_dngaysinh;
 	private JTextField textField_dsdt;
 	private JTextField textField_dcccd;
-	private JTextField textField_email;
 	private JRadioButton NewRadioButton_dnam;
 	private JRadioButton NewRadioButton_dnu;
 	private ButtonGroup btn_groupDgioitinh;
@@ -105,6 +104,10 @@ public class NguoiDung extends JFrame {
 	private Socket socket;
 	private BufferedReader reader;
 	private PrintWriter writer;
+	private DangNhap dn;
+	private NguoiDungDAO dao;
+	private JTextField txt_email;
+	private TKNgDung tk;
 
 	/**
 	 * Launch the application.
@@ -112,29 +115,14 @@ public class NguoiDung extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				// Kiểm tra kết nối đến server
-				if (isServerRunning("localhost", 9090)) {
-					// Nếu server đang chạy, hiển thị giao diện
-					NguoiDung frame = new NguoiDung();
-					frame.setVisible(true);
-				} else {
-					// Nếu server không chạy, hiển thị thông báo
-					JOptionPane.showMessageDialog(null, "Không thể kết nối đến server.");
-				}
+
+				NguoiDung frame = new NguoiDung();
+				frame.setVisible(true);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
-	}
-
-	public static boolean isServerRunning(String address, int port) {
-		try (Socket ignored = new Socket(address, port)) {
-			// Nếu kết nối thành công, server đang chạy
-			return true;
-		} catch (Exception e) {
-			// Nếu không kết nối được, server không chạy
-			return false;
-		}
 	}
 
 	/**
@@ -142,6 +130,10 @@ public class NguoiDung extends JFrame {
 	 *
 	 * @throws IOException
 	 */
+	public NguoiDung(TKNgDung tk) {
+		this.tk = tk;
+	}
+
 	public NguoiDung() throws IOException {
 
 		this.dsLichBay = new DSLichBay();
@@ -175,10 +167,7 @@ public class NguoiDung extends JFrame {
 		btnNewButton.setBackground(Color.ORANGE);
 		btnNewButton.setBounds(10, 10, 180, 52);
 		panel.add(btnNewButton);
-		java.net.URL urlIcon_Calender = NguoiDung.class.getResource("calendar");
-		// Image img = Toolkit.getDefaultToolkit().createImage(urlIcon_Calender);
-		Image img = ImageIO.read(getClass().getResource("calendar.png"));
-		btnNewButton.setIcon(new ImageIcon(img));
+		btnNewButton.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\calendar.png"));
 
 		JButton btnNewButton_1 = new JButton("Đặt Vé");
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -186,18 +175,16 @@ public class NguoiDung extends JFrame {
 		panel.add(btnNewButton_1);
 		btnNewButton_1.setForeground(new Color(255, 255, 255));
 		btnNewButton_1.setBackground(new Color(255, 128, 64));
-		java.net.URL urlIcon_Ticket = NguoiDung.class.getResource("ticket");
-		Image img1 = ImageIO.read(getClass().getResource("ticket.png"));
-		btnNewButton_1.setIcon(new ImageIcon(img1));
+
+		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\ticket.png"));
 
 		JButton btnNewButton_1_1 = new JButton("Đăng Xuất");
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_1_1.setBackground(new Color(64, 128, 128));
 		btnNewButton_1_1.setForeground(new Color(255, 255, 255));
 
-		java.net.URL urlIcon_LogOff = NguoiDung.class.getResource("log_off");
-		Image img2 = ImageIO.read(getClass().getResource("log_off.png"));
-		btnNewButton_1_1.setIcon(new ImageIcon(img2));
+		btnNewButton_1_1
+				.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\log_off.png"));
 
 		btnNewButton_1_1.setBounds(13, 261, 180, 54);
 		panel.add(btnNewButton_1_1);
@@ -221,9 +208,7 @@ public class NguoiDung extends JFrame {
 		btnNewButton_1_1_1.setBackground(new Color(0, 0, 128));
 		btnNewButton_1_1_1.setForeground(new Color(255, 255, 255));
 		btnNewButton_1_1_1.setBounds(12, 330, 180, 50);
-		java.net.URL urlIcon_Exit = NguoiDung.class.getResource("exit");
-		Image img3 = ImageIO.read(getClass().getResource("exit.png"));
-		btnNewButton_1_1_1.setIcon(new ImageIcon(img3));
+		btnNewButton_1_1_1.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\exit.png"));
 		panel.add(btnNewButton_1_1_1);
 
 		JButton btnNewButton_1_1_2 = new JButton("Tra Cứu");
@@ -231,15 +216,13 @@ public class NguoiDung extends JFrame {
 		btnNewButton_1_1_2.setBackground(new Color(0, 128, 237));
 		btnNewButton_1_1_2.setForeground(new Color(255, 255, 255));
 		btnNewButton_1_1_2.setBounds(10, 140, 180, 51);
-		java.net.URL urlIcon_Search = NguoiDung.class.getResource("search1");
-		Image img4 = ImageIO.read(getClass().getResource("search1.png"));
-		btnNewButton_1_1_2.setIcon(new ImageIcon(img4));
+		btnNewButton_1_1_2
+				.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\search1.png"));
 		panel.add(btnNewButton_1_1_2);
 
 		JButton btnNewButton_chat = new JButton("Chat");
 		btnNewButton_chat.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_chat
-				.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\View\\admin.png"));
+		btnNewButton_chat.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\admin.png"));
 		btnNewButton_chat.setForeground(Color.WHITE);
 		btnNewButton_chat.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_chat.setBackground(new Color(0, 128, 237));
@@ -302,9 +285,7 @@ public class NguoiDung extends JFrame {
 		btnNewButton_2.setBounds(789, 26, 140, 55);
 		btnNewButton_2.setBackground(new Color(255, 128, 128));
 		btnNewButton_2.setForeground(Color.black);
-		java.net.URL urlIcon_Search1 = NguoiDung.class.getResource("search2");
-		Image img_tim = ImageIO.read(getClass().getResource("search2.png"));
-		btnNewButton_2.setIcon(new ImageIcon(img_tim));
+		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\search2.png"));
 		panel_lichbay.add(btnNewButton_2);
 
 		JPanel jPanel_datghe = new JPanel();
@@ -470,12 +451,12 @@ public class NguoiDung extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				ImageIcon imageIcon = new ImageIcon("file:///C:/Users/ASUS/Documents/Java/CuoiKi2_2024/src/View/qrcode.png");
+				ImageIcon imageIcon = new ImageIcon("C:/Users/ASUS/Documents/Java/CuoiKi2_2024/src/img/qrcode.png");
 				Image image = imageIcon.getImage();
 				g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		
+
 		lblQRCode.setBounds(395, 15, 180, 180);
 		panel_tt.add(lblQRCode);
 
@@ -726,14 +707,12 @@ public class NguoiDung extends JFrame {
 		lblNewLabel_tenTK.setBounds(180, 10, 256, 39);
 		jPanel_chat.add(lblNewLabel_tenTK);
 
-		
-
 		textArea_chat = new JTextArea();
 		textArea_chat.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		textArea_chat.setLineWrap(true);
 		textArea_chat.setWrapStyleWord(true);
 		textArea_chat.setEditable(false);
-		
+
 		JScrollPane scrPane_chat = new JScrollPane(textArea_chat);
 		scrPane_chat.setBounds(10, 88, 665, 244);
 		jPanel_chat.add(scrPane_chat);
@@ -859,23 +838,23 @@ public class NguoiDung extends JFrame {
 		btnNewButton_5.setForeground(Color.white);
 		jPanel_datve.add(btnNewButton_5);
 
-		textField_email = new JTextField("Email");
-		textField_email.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_email.setColumns(10);
-		textField_email.setBounds(780, 81, 196, 41);
-		jPanel_datve.add(textField_email);
-		textField_email.addFocusListener(new FocusListener() {
+		txt_email = new JTextField("Email");
+		txt_email.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txt_email.setColumns(10);
+		txt_email.setBounds(780, 81, 196, 41);
+		jPanel_datve.add(txt_email);
+		txt_email.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (textField_email.getText().equals("Email")) {
-					textField_email.setText("");
+				if (txt_email.getText().equals("Email")) {
+					txt_email.setText("");
 				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (textField_email.getText().isEmpty()) {
-					textField_email.setText("Email");
+				if (txt_email.getText().isEmpty()) {
+					txt_email.setText("Email");
 				}
 			}
 		});
@@ -1019,7 +998,8 @@ public class NguoiDung extends JFrame {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				ImageIcon imageIcon = new ImageIcon("D:\\Workspace\\Intell\\QLCB\\src\\View\\nen1.jpg");
+				ImageIcon imageIcon = new ImageIcon(
+						"C:\\Users\\ASUS\\Documents\\Java\\CuoiKi2_2024\\src\\img\\nen1.png");
 				Image icon = imageIcon.getImage();
 				g.drawImage(icon, 0, 0, getWidth(), getHeight(), this);
 			}
@@ -1263,66 +1243,62 @@ public class NguoiDung extends JFrame {
 	}
 
 	public void thuchienthemkhachhang(KhachHang kh) {
+		String email_nhap = txt_email.getText().trim();
+		
 		if (!this.dsKhachHang.kiemtraCCCD(kh)) {
 			if (!this.dsKhachHang.kiemtraSDT(kh)) {
-				if (!textField_email.getText().isEmpty()) {
-					if (textField_email.getText().matches("^.+@gmail.com")) {
-						Emailto.sendEmail(textField_email.getText().trim());
-						String randomOTP = Emailto.laymaTeenCode(); // Lấy mã OTP đã gửi từ email
+				if (email_nhap.matches("^.+@gmail.com")) {
+					Emailto.sendEmail(email_nhap);
+					String randomOTP = Emailto.laymaTeenCode(); // Lấy mã OTP đã gửi từ email
 
-						String xacthuc = JOptionPane.showInputDialog(this,
-								"Nhập Mã OTP qua email: " + textField_email.getText(), "Messenger",
-								JOptionPane.OK_CANCEL_OPTION);
-						if (xacthuc != null) {
+					String xacthuc = JOptionPane.showInputDialog(this, "Nhập Mã OTP qua email: " + email_nhap,
+							"Messenger", JOptionPane.OK_CANCEL_OPTION);
+					if (xacthuc != null) {
 
-							if (xacthuc.equals(randomOTP)) {
+						if (xacthuc.equals(randomOTP)) {
 
-								this.dsKhachHang.insert(kh);
-								this.themkhachhangvaobangkhachhang(kh);
-								this.khachHangDAO.insert(kh);
-								EditLichBay lb = new EditLichBay(comboBox_datvemachuyenbay.getSelectedItem() + "", null,
-										null, null, null, null, 0);
-								if (comboBox_EconomyClass.getSelectedItem().equals(kh.getSoGhe() + "")) {
-									this.lichBayDAO.xoaghe(lb,
-											Integer.valueOf(comboBox_EconomyClass.getSelectedItem() + ""), null, null);
-									themtienvaodatabase(comboBox_datvemachuyenbay.getSelectedItem() + "");
-								} else if (comboBox_BusinessClass.getSelectedItem().equals(kh.getSoGhe() + "")) {
-									this.lichBayDAO.xoaghe(lb, null,
-											Integer.valueOf(comboBox_BusinessClass.getSelectedItem() + ""), null);
-									themtienvaodatabase(comboBox_datvemachuyenbay.getSelectedItem() + "");
-								} else if (comboBox_FirstClass.getSelectedItem().equals(kh.getSoGhe())) {
-									this.lichBayDAO.xoaghe(lb, null, null,
-											Integer.valueOf(comboBox_FirstClass.getSelectedItem() + ""));
-									themtienvaodatabase(comboBox_datvemachuyenbay.getSelectedItem() + "");
-								}
-
-								JOptionPane.showMessageDialog(this, "Thêm Thành Công!");
-								cardLayout.show(jPanel_card, "jPanel_datve");
-							} else {
-								JOptionPane.showMessageDialog(this, "Mã OTP không đúng", "ERROR",
-										JOptionPane.ERROR_MESSAGE);
+							this.dsKhachHang.insert(kh);
+							this.themkhachhangvaobangkhachhang(kh);
+							this.khachHangDAO.insert(kh);
+							EditLichBay lb = new EditLichBay(comboBox_datvemachuyenbay.getSelectedItem() + "", null,
+									null, null, null, null, 0);
+							if (comboBox_EconomyClass.getSelectedItem().equals(kh.getSoGhe() + "")) {
+								this.lichBayDAO.xoaghe(lb,
+										Integer.valueOf(comboBox_EconomyClass.getSelectedItem() + ""), null, null);
+								themtienvaodatabase(comboBox_datvemachuyenbay.getSelectedItem() + "");
+							} else if (comboBox_BusinessClass.getSelectedItem().equals(kh.getSoGhe() + "")) {
+								this.lichBayDAO.xoaghe(lb, null,
+										Integer.valueOf(comboBox_BusinessClass.getSelectedItem() + ""), null);
+								themtienvaodatabase(comboBox_datvemachuyenbay.getSelectedItem() + "");
+							} else if (comboBox_FirstClass.getSelectedItem().equals(kh.getSoGhe())) {
+								this.lichBayDAO.xoaghe(lb, null, null,
+										Integer.valueOf(comboBox_FirstClass.getSelectedItem() + ""));
+								themtienvaodatabase(comboBox_datvemachuyenbay.getSelectedItem() + "");
 							}
+
+							JOptionPane.showMessageDialog(this, "Thêm Thành Công!");
+							cardLayout.show(jPanel_card, "jPanel_datve");
+						} else {
+							JOptionPane.showMessageDialog(this, "Mã OTP không đúng", "ERROR",
+									JOptionPane.ERROR_MESSAGE);
 						}
-						this.textField_dtenkhachhang.setText("Tên Đặt Vé");
-						this.textField_dngaysinh.setText("Ngày Sinh");
-						this.btn_groupDgioitinh.clearSelection();
-						this.textField_dcccd.setText("CCCD");
-						this.comboBox_datvemachuyenbay.setSelectedIndex(0);
-						this.textField_dsdt.setText("Số Điện Thoại");
-						this.comboBox_BusinessClass.setSelectedIndex(0);
-						this.comboBox_EconomyClass.setSelectedIndex(0);
-						this.comboBox_FirstClass.setSelectedIndex(0);
-						this.textField_email.setText("Email");
-						this.NewLabel_giave.setText("");
-						layout.show(panel_3, "panel1");
-						this.NewLabel_anhchuyenkhoan.setIcon(null);
-					} else {
-						JOptionPane.showMessageDialog(this, "Email không đúng định dạng! (@gmail.com)", "ERROR",
-								JOptionPane.ERROR_MESSAGE);
 					}
+					this.textField_dtenkhachhang.setText("Tên Đặt Vé");
+					this.textField_dngaysinh.setText("Ngày Sinh");
+					this.btn_groupDgioitinh.clearSelection();
+					this.textField_dcccd.setText("CCCD");
+					this.comboBox_datvemachuyenbay.setSelectedIndex(0);
+					this.textField_dsdt.setText("Số Điện Thoại");
+					this.comboBox_BusinessClass.setSelectedIndex(0);
+					this.comboBox_EconomyClass.setSelectedIndex(0);
+					this.comboBox_FirstClass.setSelectedIndex(0);
+
+					this.NewLabel_giave.setText("");
+					layout.show(panel_3, "panel1");
+					this.NewLabel_anhchuyenkhoan.setIcon(null);
+
 				} else {
-					JOptionPane.showMessageDialog(this, "Email trống! vui lòng nhập email", "ERROR",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Email không đúng định dạng (@gmail.com)....", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				JOptionPane.showMessageDialog(this, "Số điện thoại đã tồn tại", "ERROR", JOptionPane.ERROR_MESSAGE);

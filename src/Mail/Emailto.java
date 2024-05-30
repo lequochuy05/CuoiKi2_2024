@@ -14,7 +14,7 @@ public class Emailto {
     private static NguoiDung nguoiDung;
     public static void sendEmail(String to) {
         String username = "tho10062205@gmail.com";
-        String password = "vvjpfeevhqxmljrm";
+        String password = "qkld tcgf sizw aozh";
         
 
         // Tạo mã xác nhận ngẫu nhiên
@@ -26,6 +26,7 @@ public class Emailto {
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         // Tạo phiên làm việc
         Session session = Session.getInstance(properties, new Authenticator() {
