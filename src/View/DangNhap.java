@@ -14,6 +14,9 @@ import javax.swing.*;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -22,8 +25,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Random;
 
 public class DangNhap extends JFrame {
@@ -781,8 +782,9 @@ public class DangNhap extends JFrame {
 					JOptionPane.OK_CANCEL_OPTION);
 			if (xacthuc != null) {
 
-				if (xacthuc.equals(randomOTP)) {
-					TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhauMoi, null);
+				if (xacthuc.equals(randomOTP)) {	
+					String hashedPassword = BCrypt.hashpw(matKhauMoi, BCrypt.gensalt());
+					TKNgDung tkNgDung = new TKNgDung(taiKhoan, hashedPassword, null);
 					NguoiDungDAO.getInstance().doiMatKhau(tkNgDung);
 					thongbao = "Đổi mật khẩu thành công!\n" + "Mật khẩu mới của bạn là: " + matKhauMoi;
 					JOptionPane.showMessageDialog(this,
@@ -803,8 +805,7 @@ public class DangNhap extends JFrame {
 		String email = txt_email.getText();
 		String taiKhoan = txtUsername_dangky.getText();
 		char[] matKhau = txtPassword_dangky.getPassword();
-		// String encodepass = Base64.getEncoder().encodeToString(new
-		// String(matKhau).getBytes());
+		
 		String tenht = textField_displayName.getText();
 		if (email.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Vui lòng nhập email", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -955,8 +956,13 @@ public class DangNhap extends JFrame {
 
 					if (xacthuc.equals(randomOTP)) {
 						String matKhauMoi = String.valueOf(random());
-						TKNgDung tkNgDung = new TKNgDung(taiKhoan, matKhauMoi, null);
+						// Mã hóa mật khẩu mới (chỉ một lần)
+						String hashedPassword = BCrypt.hashpw(matKhauMoi, BCrypt.gensalt());
+						TKNgDung tkNgDung = new TKNgDung(taiKhoan, hashedPassword, null);
+
+						// Cập nhật mật khẩu
 						NguoiDungDAO.getInstance().quenMatKhau(tkNgDung);
+
 						thongbao = "Lấy lại mật khẩu thành công!\nMật khẩu mới của bạn là: " + matKhauMoi;
 						JOptionPane.showMessageDialog(this, thongbao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 						txtCaptcha2_quenmatkhau.setText(String.valueOf(random()));

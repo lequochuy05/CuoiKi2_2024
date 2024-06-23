@@ -1,6 +1,6 @@
 package Socket;
 
-import java.util.Base64;
+import java.util.*;
 
 public class MaHoa {
     public String encoded(String text) {

@@ -23,9 +23,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import java.awt.Component;
-
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -50,8 +47,7 @@ import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
+
 
 public class NguoiDung extends JFrame {
 
@@ -106,7 +102,6 @@ public class NguoiDung extends JFrame {
 	private PrintWriter writer;
 	private DangNhap dn;
 	private NguoiDungDAO dao;
-	private JTextField txt_email;
 	private TKNgDung tk;
 
 	/**
@@ -833,31 +828,10 @@ public class NguoiDung extends JFrame {
 
 		JButton btnNewButton_5 = new JButton("Đặt Ghế");
 		btnNewButton_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_5.setBounds(796, 11, 180, 51);
+		btnNewButton_5.setBounds(796, 52, 180, 51);
 		btnNewButton_5.setBackground(new Color(255, 128, 128));
 		btnNewButton_5.setForeground(Color.white);
 		jPanel_datve.add(btnNewButton_5);
-
-		txt_email = new JTextField("Email");
-		txt_email.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txt_email.setColumns(10);
-		txt_email.setBounds(780, 81, 196, 41);
-		jPanel_datve.add(txt_email);
-		txt_email.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (txt_email.getText().equals("Email")) {
-					txt_email.setText("");
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (txt_email.getText().isEmpty()) {
-					txt_email.setText("Email");
-				}
-			}
-		});
 
 		btnNewButton.addActionListener(new ActionListener() {
 
@@ -944,12 +918,12 @@ public class NguoiDung extends JFrame {
 					JOptionPane.showMessageDialog(null, "Chọn loại ghế cần đặt.");
 				} else if (comboBox_BusinessClass.getSelectedIndex() == 0
 						&& comboBox_EconomyClass.getSelectedIndex() == 0) {
-					NewLabel_giave.setText("120.000.000 VND");
+					NewLabel_giave.setText("150$");
 				} else if (comboBox_BusinessClass.getSelectedIndex() == 0
 						&& comboBox_FirstClass.getSelectedIndex() == 0) {
-					NewLabel_giave.setText("1.500.000 VND");
+					NewLabel_giave.setText("80$");
 				} else if (comboBox_EconomyClass.getSelectedIndex() == 0) {
-					NewLabel_giave.setText("800.000 VND");
+					NewLabel_giave.setText("500$");
 				} else {
 					JOptionPane.showMessageDialog(null, "Chỉ được chọn một loại ghế");
 				}
@@ -1243,7 +1217,8 @@ public class NguoiDung extends JFrame {
 	}
 
 	public void thuchienthemkhachhang(KhachHang kh) {
-		String email_nhap = txt_email.getText().trim();
+		dao = new NguoiDungDAO();
+		String email_nhap = dao.layEmail();
 		
 		if (!this.dsKhachHang.kiemtraCCCD(kh)) {
 			if (!this.dsKhachHang.kiemtraSDT(kh)) {

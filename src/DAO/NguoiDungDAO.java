@@ -3,10 +3,13 @@ package DAO;
 import Database.JDCBCUtil;
 import Model.TKAdmin;
 import Model.TKNgDung;
-import View.*;
 import Socket.MaHoa;
+import View.*;
 
 import javax.swing.*;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class NguoiDungDAO {
-    private MaHoa maHoa;
+   private MaHoa maHoa;
     private DangNhap dn;
     public static NguoiDungDAO getInstance(){
         return new NguoiDungDAO();
@@ -26,7 +29,10 @@ public class NguoiDungDAO {
             String sql = "INSERT INTO dstknguoidung (userName, password, displayname, email) VALUES (?, ?, ?, ?)";
             PreparedStatement pst = connection.prepareStatement(sql);
             pst.setString(1, ngDung.getTaiKhoanNG());
-            pst.setString(2, ngDung.getMatKhauNG());
+         // Mã hóa mật khẩu
+            String hashedPassword = BCrypt.hashpw(ngDung.getMatKhauNG(), BCrypt.gensalt());
+            pst.setString(2, hashedPassword); // Lưu mật khẩu đã mã hóa vào CSDL
+
             pst.setString(3, ngDung.getTenHienThi());
             pst.setString(4, ngDung.getEmail());
             
@@ -110,15 +116,16 @@ public class NguoiDungDAO {
         Connection connection = null;
         try {
             connection = JDCBCUtil.getConnection();
-            String sql= "SELECT * FROM dstknguoidung WHERE userName = ? AND password = ?";
+            String sql= "SELECT password FROM dstknguoidung WHERE userName = ?";
             PreparedStatement pts = connection.prepareStatement(sql);
             pts.setString(1, taiKhoan);
-            pts.setString(2, matKhau);
+            
 
             ResultSet resultSet = pts.executeQuery();
 
             if (resultSet.next()) {
-                return true;
+            	String hashedPassword = resultSet.getString("password");
+                return BCrypt.checkpw(matKhau, hashedPassword); // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
             } else {
                 return false;
             }
@@ -154,14 +161,16 @@ public class NguoiDungDAO {
         String tenDangNhap = null;
         try {
             Connection connection = JDCBCUtil.getConnection();
-            String sql = "SELECT displayname FROM dstknguoidung WHERE userName = ? AND password = ?";
+            String sql = "SELECT displayname, password FROM dstknguoidung WHERE userName = ?";
             PreparedStatement pst = connection.prepareStatement(sql);
             pst.setString(1, taiKhoan);
-            pst.setString(2, matKhau);
 
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                tenDangNhap = rs.getString("displayname");
+            	 String hashedPassword = rs.getString("password");
+                 if (BCrypt.checkpw(matKhau, hashedPassword)) { // So sánh mật khẩu đã mã hóa
+                     tenDangNhap = rs.getString("displayname");
+                 }
             }
 
             JDCBCUtil.closeConnection(connection);
@@ -170,6 +179,27 @@ public class NguoiDungDAO {
         }
         return tenDangNhap;
     }
+    
+    public String layEmail() {
+        String em ="";
+        try {
+            Connection connection = JDCBCUtil.getConnection();
+            String sql = "SELECT email FROM dstknguoidung";
+            PreparedStatement pst = connection.prepareStatement(sql);         
+           
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+            	em = rs.getString("email");
+            }
+
+            JDCBCUtil.closeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+     return em;
+    }
+    
   
     
     public String layEmail(String user) {

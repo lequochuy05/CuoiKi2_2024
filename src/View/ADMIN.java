@@ -5,11 +5,9 @@ import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,17 +25,8 @@ import Model.EditLichBay;
 import Model.KhachHang;
 import Model.KhoLuuTru;
 import Model.LuuTru;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
-import org.json.JSONObject;
 
 import javax.swing.border.LineBorder;
-import javax.swing.event.CaretListener;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
 
 public class ADMIN extends JFrame {
 	private JTextField textField_sendChat;
@@ -71,6 +60,7 @@ public class ADMIN extends JFrame {
 	private BufferedReader reader;
 	private PrintWriter writer;
 	private JTextArea textArea_message;
+	private static JPanel panel_chualblNguoiDung;
 
 	/**
 	 * Launch the application.
@@ -554,6 +544,10 @@ public class ADMIN extends JFrame {
 		btnNewButton_send.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton_send.setBounds(845, 407, 134, 45);
 		panel_chat.add(btnNewButton_send);
+		
+		panel_chualblNguoiDung = new JPanel();
+		panel_chualblNguoiDung.setBounds(10, 28, 825, 38);
+		panel_chat.add(panel_chualblNguoiDung);
 
 		jPanel_duyet.add(btnNewButton_4);
 		jPanel_card.setBounds(205, 177, 991, 464);
@@ -596,7 +590,7 @@ public class ADMIN extends JFrame {
 					socket = new Socket("localhost", 9090);
 					reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					writer = new PrintWriter(socket.getOutputStream(), true);
-
+					System.out.println("Đã nhận dữ liệu");
 					// Gửi tên của client tới server khi kết nối
 					writer.println("ADMIN");
 
@@ -1193,6 +1187,7 @@ public class ADMIN extends JFrame {
 				kh.getCccd(), kh.getMaChuyenBay(), kh.getSoDienThoai(), kh.getTinhTrang(), kh.getLoaiGhe(),
 				kh.getSoGhe() + "", kh.getUrl() });
 	}
+	
 
 	public void thuchientim() {
 		this.tailichbaylenbang();
@@ -1279,6 +1274,21 @@ public class ADMIN extends JFrame {
 		comboBox_lichkhoihanh.setSelectedIndex(0);
 
 	}
-	
+//	public static void capNhatDanhSachNguoiDung(ArrayList<String> danhSachTenTK) {
+//	    try {
+//			panel_chualblNguoiDung.removeAll();
+//
+//			for (String tenTK : danhSachTenTK) {
+//			    JLabel lblUserInfo = new JLabel(tenTK);
+//			    panel_chualblNguoiDung.add(lblUserInfo);
+//			}
+//
+//			panel_chualblNguoiDung.revalidate();
+//			panel_chualblNguoiDung.repaint();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

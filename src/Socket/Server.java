@@ -1,4 +1,5 @@
 package Socket;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,11 +16,11 @@ public class Server {
     public Server() {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
-            System.out.println("Server đang chạy và đợi kết nối từ client...");
+            System.out.println("Server is running...");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Đã kết nối với một client.");
+                System.out.println("Connected.");
 
                 // Tạo mới và thêm ClientHandler vào danh sách clients
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
@@ -56,7 +57,7 @@ public class Server {
             try {
                 // Đọc tên client từ client đầu tiên gửi tới
                 clientName = reader.readLine();
-                System.out.println(clientName + " đã kết nối.");
+                System.out.println(clientName + " Connected.");
 
                 String message;
                 while ((message = reader.readLine()) != null) {
@@ -64,11 +65,11 @@ public class Server {
                 }
             } catch (IOException e) {
                 // Xử lý khi có lỗi xảy ra
-               // System.err.println("Lỗi khi đọc từ client: " + e.getMessage());
+                //System.err.println("Lỗi khi đọc từ client: " + e.getMessage());
             } finally {
                 // Xóa client ra khỏi danh sách khi client ngắt kết nối
                 clients.remove(this);
-                System.out.println(clientName + " đã ngắt kết nối.");
+                System.out.println(clientName + " disconnected.");
                 try {
                     socket.close(); // Đóng socket của client
                 } catch (IOException e) {
